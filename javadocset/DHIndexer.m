@@ -60,51 +60,51 @@
         NSString *name = [anchor innerText];
         NSString *dtClassName = [parent className];
         dtClassName = (dtClassName) ? dtClassName : @"";
-        if([text rangeOfString:@"Class in"].location != NSNotFound || [text rangeOfString:@"- class"].location != NSNotFound || [dtClassName hasSuffix:@"class"])
+        if([text rangeOfString:@"Class in"].location != NSNotFound || [text rangeOfString:@"- class"].location != NSNotFound || [dtClassName hasSuffix:@"class"] || [text rangeOfString:@" のクラス"].location != NSNotFound || [text rangeOfString:@" 内のクラス"].location != NSNotFound)
         {
             type = @"Class";
         }
-        else if([text rangeOfString:@"Static method in"].location != NSNotFound || [dtClassName hasSuffix:@"method"])
+        else if([text rangeOfString:@"Static method in"].location != NSNotFound || [text rangeOfString:@" の static メソッド"].location != NSNotFound || [text rangeOfString:@" 内の static メソッド"].location != NSNotFound || [dtClassName hasSuffix:@"method"])
         {
             type = @"Method";
         }
-        else if([text rangeOfString:@"Static variable in"].location != NSNotFound || [dtClassName hasSuffix:@"field"] || [text rangeOfString:@"Field in"].location != NSNotFound)
+        else if([text rangeOfString:@"Static variable in"].location != NSNotFound || [text rangeOfString:@" の static 変数"].location != NSNotFound || [text rangeOfString:@" 内の static 変数"].location != NSNotFound || [dtClassName hasSuffix:@"field"] || [text rangeOfString:@"Field in"].location != NSNotFound)
         {
             type = @"Field";
         }
-        else if([text rangeOfString:@"Constructor"].location != NSNotFound || [dtClassName hasSuffix:@"constructor"])
+        else if([text rangeOfString:@"Constructor"].location != NSNotFound || [text rangeOfString:@" のコンストラクタ"].location != NSNotFound || [dtClassName hasSuffix:@"constructor"])
         {
             type = @"Constructor";
         }
-        else if([text rangeOfString:@"Method in"].location != NSNotFound)
+        else if([text rangeOfString:@"Method in"].location != NSNotFound || [text rangeOfString:@" のメソッド"].location != NSNotFound)
         {
             type = @"Method";
         }
-        else if([text rangeOfString:@"Variable in"].location != NSNotFound)
+        else if([text rangeOfString:@"Variable in"].location != NSNotFound || [text rangeOfString:@" の変数"].location != NSNotFound || [text rangeOfString:@" 内の変数"].location != NSNotFound)
         {
             type = @"Field";
         }
-        else if([text rangeOfString:@"Interface in"].location != NSNotFound || [text rangeOfString:@"- interface"].location != NSNotFound || [dtClassName hasSuffix:@"interface"])
+        else if([text rangeOfString:@"Interface in"].location != NSNotFound || [text rangeOfString:@"- interface"].location != NSNotFound || [dtClassName hasSuffix:@"interface"] || [text rangeOfString:@"のインタフェース"].location != NSNotFound)
         {
             type = @"Interface";
         }
-        else if([text rangeOfString:@"Exception in"].location != NSNotFound || [text rangeOfString:@"- exception"].location != NSNotFound || [dtClassName hasSuffix:@"exception"])
+        else if([text rangeOfString:@"Exception in"].location != NSNotFound || [text rangeOfString:@"- exception"].location != NSNotFound || [dtClassName hasSuffix:@"exception"] || [text rangeOfString:@" の例外"].location != NSNotFound || [text rangeOfString:@" 内の例外"].location != NSNotFound)
         {
             type = @"Exception";
         }
-        else if([text rangeOfString:@"Error in"].location != NSNotFound || [text rangeOfString:@"- error"].location != NSNotFound || [dtClassName hasSuffix:@"error"])
+        else if([text rangeOfString:@"Error in"].location != NSNotFound || [text rangeOfString:@"- error"].location != NSNotFound || [dtClassName hasSuffix:@"error"] || [text rangeOfString:@" 内のエラー"].location != NSNotFound)
         {
             type = @"Error";
         }
-        else if([text rangeOfString:@"Enum in"].location != NSNotFound || [text rangeOfString:@"- enum"].location != NSNotFound || [dtClassName hasSuffix:@"enum"])
+        else if([text rangeOfString:@"Enum in"].location != NSNotFound || [text rangeOfString:@"- enum"].location != NSNotFound || [dtClassName hasSuffix:@"enum"] || [text rangeOfString:@" の列挙"].location != NSNotFound || [text rangeOfString:@" 内の列挙"].location != NSNotFound)
         {
             type = @"Enum";
         }
-        else if([text rangeOfString:@"package"].location != NSNotFound || [dtClassName hasSuffix:@"package"])
+        else if([text rangeOfString:@"package"].location != NSNotFound || [text rangeOfString:@"パッケージ"].location != NSNotFound || [dtClassName hasSuffix:@"package"])
         {
             type = @"Package";
         }
-        else if([text rangeOfString:@"Annotation Type"].location != NSNotFound || [dtClassName hasSuffix:@"annotation"])
+        else if([text rangeOfString:@"Annotation Type"].location != NSNotFound || [text rangeOfString:@" の注釈型"].location != NSNotFound || [text rangeOfString:@" 内の注釈型"].location != NSNotFound || [dtClassName hasSuffix:@"annotation"])
         {
             type = @"Notation";
         }
