@@ -104,9 +104,13 @@
         {
             type = @"Package";
         }
-        else if([text rangeOfString:@"Annotation Type"].location != NSNotFound || [text rangeOfString:@"の注釈型"].location != NSNotFound || [text rangeOfString:@"内の注釈型"].location != NSNotFound || [dtClassName hasSuffix:@"annotation"])
+        else if([text rangeOfString:@"Annotation Type"].location != NSNotFound || [text rangeOfString:@"の注釈型"].location != NSNotFound || [text rangeOfString:@"内の注釈型"].location != NSNotFound || [text rangeOfString:@"の注釈タイプ"].location != NSNotFound || [dtClassName hasSuffix:@"annotation"])
         {
             type = @"Notation";
+        }
+        else if([text rangeOfString:@"Module"].location != NSNotFound || [text rangeOfString:@"モジュール"].location != NSNotFound)
+        {
+            type = @"Module";
         }
         else
         {
