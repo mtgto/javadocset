@@ -306,7 +306,10 @@
 - (void)writeInfoPlist:(NSString *)docsetIndexFile
 {
     NSString *platform = [[[self.docsetName componentsSeparatedByString:@" "] objectAtIndex:0] lowercaseString];
-    [[NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>%@</string><key>CFBundleName</key><string>%@</string><key>DocSetPlatformFamily</key><string>%@</string><key>dashIndexFilePath</key><string>%@</string><key>DashDocSetFamily</key><string>java</string><key>isDashDocset</key><true/><key>DashDocSetFallbackURL</key><string>https://docs.oracle.com/javase/jp/10/docs/api/</string></dict></plist>", platform, self.docsetName, platform, docsetIndexFile] writeToFile:[self.contentsDir stringByAppendingPathComponent:@"Info.plist"] atomically:NO encoding:NSUTF8StringEncoding error:nil];
+    NSRegularExpression *versionRegexp = [NSRegularExpression regularExpressionWithPattern:@"(\\d+)" options:0 error:nil];
+    NSRange range = [versionRegexp rangeOfFirstMatchInString:self.docsetName options:0 range:NSMakeRange(0, self.docsetName.length)];
+    NSString *version = range.location == NSNotFound ? @"10" : [self.docsetName substringWithRange:range];
+    [[NSString stringWithFormat:@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><plist version=\"1.0\"><dict><key>CFBundleIdentifier</key><string>%@</string><key>CFBundleName</key><string>%@</string><key>DocSetPlatformFamily</key><string>%@</string><key>dashIndexFilePath</key><string>%@</string><key>DashDocSetFamily</key><string>java</string><key>isDashDocset</key><true/><key>DashDocSetFallbackURL</key><string>https://docs.oracle.com/javase/jp/%@/docs/api/</string></dict></plist>", platform, self.docsetName, platform, docsetIndexFile, version] writeToFile:[self.contentsDir stringByAppendingPathComponent:@"Info.plist"] atomically:NO encoding:NSUTF8StringEncoding error:nil];
 }
 
 - (void)copyFiles
