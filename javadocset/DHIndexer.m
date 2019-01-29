@@ -50,6 +50,10 @@
             {
                 continue;
             }
+            // Java 11+
+            if([[parent tagName] isCaseInsensitiveLike:@"span"] && [[[parent parentElement] tagName] isCaseInsensitiveLike:@"dt"]) {
+                parent = (DOMHTMLElement*)[parent parentElement];
+            }
         }
         if(![[parent tagName] isCaseInsensitiveLike:@"dt"])
         {
@@ -64,11 +68,11 @@
         {
             type = @"Class";
         }
-        else if([text rangeOfString:@"Static method in" options:NSCaseInsensitiveSearch].location != NSNotFound || [dtClassName hasSuffix:@"method"] || [text rangeOfString:@" の static メソッド"].location != NSNotFound || [text rangeOfString:@" 内の static メソッド"].location != NSNotFound || [text rangeOfString:@"のstaticメソッド"].location != NSNotFound)
+        else if([text rangeOfString:@"Static method in" options:NSCaseInsensitiveSearch].location != NSNotFound || [dtClassName hasSuffix:@"method"] || [text rangeOfString:@" の static メソッド"].location != NSNotFound || [text rangeOfString:@" 内の static メソッド"].location != NSNotFound || [text rangeOfString:@"のstaticメソッド"].location != NSNotFound || [text rangeOfString:@"の静的メソッド"].location != NSNotFound)
         {
             type = @"Method";
         }
-        else if([text rangeOfString:@"Static variable in" options:NSCaseInsensitiveSearch].location != NSNotFound || [dtClassName hasSuffix:@"field"] || [text rangeOfString:@"Field in" options:NSCaseInsensitiveSearch].location != NSNotFound || [text rangeOfString:@" の static 変数"].location != NSNotFound || [text rangeOfString:@" 内の static 変数"].location != NSNotFound || [text rangeOfString:@"のstatic変数"].location != NSNotFound)
+        else if([text rangeOfString:@"Static variable in" options:NSCaseInsensitiveSearch].location != NSNotFound || [dtClassName hasSuffix:@"field"] || [text rangeOfString:@"Field in" options:NSCaseInsensitiveSearch].location != NSNotFound || [text rangeOfString:@" の static 変数"].location != NSNotFound || [text rangeOfString:@" 内の static 変数"].location != NSNotFound || [text rangeOfString:@"のstatic変数"].location != NSNotFound || [text rangeOfString:@"の静的変数"].location != NSNotFound)
         {
             type = @"Field";
         }
@@ -112,9 +116,16 @@
         {
             type = @"Package";
         }
-        else if([text rangeOfString:@"Module"].location != NSNotFound || [text rangeOfString:@"モジュール"].location != NSNotFound)
+        // exclude like "jdk.javadoc.doclet.DocletEnvironment.ModuleMode"
+        else if(/*[text rangeOfString:@"Module"].location != NSNotFound || */[text rangeOfString:@"モジュール"].location != NSNotFound)
         {
             type = @"Module";
+        }
+        else if ([text rangeOfString:@"の検索タグ"].location != NSNotFound) {
+            continue;
+        }
+        else if ([[parent innerHTML] hasSuffix:@"</a></span>"]) {
+            type = @"Constant";
         }
         else
         {
